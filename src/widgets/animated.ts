@@ -16,7 +16,7 @@ export type Frame = {
  * frames is an array because those are "overlays"
  */
 export type AnimatedFrame = { 
-    frame: Frame[]
+    frame: Frame[],
 };
 
 export class AnimatedWidget {
