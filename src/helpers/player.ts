@@ -1,6 +1,7 @@
 import { Canvas } from "terminal-canvas";
-import { AnimatedFrame } from "../widgets/animated.js";
+import { AnimatedFrame, Cell, Frame } from "../widgets/animated.js";
 import { drawFrame } from "../widgets/scene.js";
+import { Compose } from "../widgets/composer.js";
 
 export class Player {
     private canvas: Canvas;
@@ -23,15 +24,29 @@ export class Player {
     private countTime(MS: number) {
         this.song_timer.ms += MS;
     }
+    private printPerformance(perf: number) {
+        this.canvas
+            .moveTo(0, 0)
+            .eraseLine()
+            .foreground(`rgb(255, 255, 255)`)
+            .write(`Perf: ${perf} | Frame Number: ${this.frame_count}`)
+    }
     play(composed_frames: AnimatedFrame[], MS: number) {
         this.canvas.hideCursor();
+
+        let perf = 0;
         setInterval(() => {
             this.measureTime();
             const frame = composed_frames[this.frame_count];
 
-            this.canvas.eraseScreen();
+            const past_perf = performance.now();
+            this.canvas.eraseScreen(); // hella expensive to run for large characters
+            // instead of clearing everything, why not reuse the characters that has already been written?
+            this.printPerformance(perf);
             drawFrame(this.canvas, frame);
             this.canvas.flush()
+
+            perf = performance.now() - past_perf;
 
             this.countTime(MS);
             this.frame_count = ++this.frame_count % (composed_frames.length - 1);
