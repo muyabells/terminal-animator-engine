@@ -11,8 +11,7 @@ type Compose = {
 
 export function composeWidgets(widget: Compose) {
     const fr: AnimatedFrame[] = [];
-    // TODO: Please figure out how overlays will work.
-    // AnimationWidgets => AnimationFrames for playback
+
     const frames = widget.main.getFrames();
     for (let frame = 0; frame < frames.length; frame++) {
         const activated_widget = widget.overlays.filter((v) => {
