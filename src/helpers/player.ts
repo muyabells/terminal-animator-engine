@@ -1,7 +1,6 @@
 import { Canvas } from "terminal-canvas";
-import { AnimatedFrame, Cell, Frame } from "../widgets/animated.js";
+import { AnimatedFrame } from "../widgets/animated.js";
 import { drawFrame } from "../widgets/scene.js";
-import { Compose } from "../widgets/composer.js";
 
 export class Player {
     private canvas: Canvas;
@@ -40,8 +39,7 @@ export class Player {
             const frame = composed_frames[this.frame_count];
 
             const past_perf = performance.now();
-            this.canvas.eraseScreen(); // hella expensive to run for large characters
-            // instead of clearing everything, why not reuse the characters that has already been written?
+            this.canvas.eraseScreen();
             this.printPerformance(perf);
             drawFrame(this.canvas, frame);
             this.canvas.flush()
