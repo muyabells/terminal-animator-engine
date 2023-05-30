@@ -1,6 +1,6 @@
 import { Canvas } from "terminal-canvas";
-import { AnimatedFrame } from "../widgets/animated.js";
-import { drawFrame } from "../widgets/scene.js";
+import { AnimatedFrame } from "./animated.js";
+import { drawFrame } from "./renderer.js";
 
 export class Player {
     private canvas: Canvas;

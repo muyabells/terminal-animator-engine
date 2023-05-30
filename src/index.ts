@@ -1,8 +1,7 @@
 import { AnimatedFrame, AnimatedWidget } from "./widgets/animated.js";
 import { generateStripes } from "./generators/stripe.js";
-import { Compose, composeWidgets, totalMSToFrameNumber } from "./widgets/composer.js";
-import { Player } from "./helpers/player.js";
-import { Canvas } from "terminal-canvas";
+import { composeWidgets, totalMSToFrameNumber } from "./widgets/composer.js";
+import { Player } from "./widgets/player.js";
 import { reverse } from "./editors/reverse.js";
 
 const FRAMES60 = 16;
