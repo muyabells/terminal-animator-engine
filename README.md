@@ -15,4 +15,4 @@ You can make your own animations in the terminal using this library. However, it
 - Sync audio and music together
 
 ## How It Works
-![project_divine_comedy](https://github.com/muyabells/terminal-animator-engine/assets/134768752/a7b2c399-1ef7-4cef-a55f-f450799e6034)
+![terminal-animator-02](https://github.com/muyabells/terminal-animator-engine/assets/134768752/2e6605f5-b8d8-4afa-85f6-1a72bb5d1a4c)
