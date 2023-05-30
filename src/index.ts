@@ -1,6 +1,6 @@
 import { AnimatedFrame, AnimatedWidget } from "./widgets/animated.js";
 import { generateStripes } from "./generators/stripe.js";
-import { Compose, composeWidgets } from "./widgets/composer.js";
+import { Compose, composeWidgets, totalMSToFrameNumber } from "./widgets/composer.js";
 import { Player } from "./helpers/player.js";
 import { Canvas } from "terminal-canvas";
 import { reverse } from "./editors/reverse.js";
@@ -32,14 +32,16 @@ function stripeGenerator(
     return main_frames;
 }
 
+// refractor start_ms to a helper function
+// pass the result of that helper function to the frames category
 const composed = composeWidgets({
     overlays: [
         {
-            start_ms: 50, 
+            start_frame: totalMSToFrameNumber(50, FRAMES15), 
             animation: new AnimatedWidget(reverse(stripeGenerator({ x: 3, y: 2 }, 10, 10), 30))
         },
     ],
-    length: 500
-}, FRAMES60);
+    length: totalMSToFrameNumber(100, FRAMES15)
+});
 const player = new Player(400, 100);
 player.play(composed, FRAMES15)
