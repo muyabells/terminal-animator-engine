@@ -47,7 +47,7 @@ export class Player {
             perf = performance.now() - past_perf;
 
             this.countTime(MS);
-            this.frame_count = ++this.frame_count % (composed_frames.length - 1);
+            this.frame_count = ++this.frame_count % composed_frames.length;
         }, MS)
     }
 }
