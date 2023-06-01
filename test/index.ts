@@ -9,7 +9,8 @@ import {
     parseStringToCells,
     parseAniFile
 } from "../src/index.js";
-import { readFileSync } from "fs";
+import { readFileSync, createReadStream } from "fs";
+import { playAudio } from "../src/widgets/audio.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -56,4 +57,5 @@ const composed = composeWidgets({
     length: 20
 });
 const player = new Player(400, 100);
-player.play(composed, FRAMES3)
+playAudio(createReadStream("./media/credits.wav"))
+player.play(composed, FRAMES3);
