@@ -9,10 +9,10 @@
 You can make your own animations in the terminal using this library. However, it's still very in the works.
 
 ## To Do Features
-- Functions that can modify specific frames (effects basically)
+- Functions that can modify specific frames (more effects are being added)
 
 ## Future Features
-- Sync audio and music together
+- Sync audio and music together (Progress on this is the ms => frames function)
 
 ## How It Works
 ![terminal-animator-02](https://github.com/muyabells/terminal-animator-engine/assets/134768752/2e6605f5-b8d8-4afa-85f6-1a72bb5d1a4c)
