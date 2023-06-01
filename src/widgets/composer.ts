@@ -19,14 +19,15 @@ export function composeWidgets(widget: Compose) {
         const activated_widget = widget.overlays.filter((v) => {
             if (v.start_frame !== undefined) {
                 return frame >= v.start_frame 
-                    && (v.start_frame + (v.animation.getFrames().length - 1)) > frame;
+                    && (v.start_frame + (v.animation.getFrames().length)) > frame;
             }
             throw Error("Didn't set the start_ms and start_frame tsk tsk tsk.")
         });
         fr.push({
             frame: activated_widget.flatMap(v => {
+                const fra = v.animation.getFrameNumber(v.animation.getFrameCount()).frame
                 v.animation.addFrameCount();
-                return v.animation.getFrameNumber(v.animation.getFrameCount()).frame;
+                return fra;
             }),
         });
     }
