@@ -6,25 +6,70 @@ literally just have this format.
 
 0:
 <START>
-   
+
+
+
+
+
+
 <END>
 
 1:
 <START>
-   .
+
+
+
+
+
+.
 <END>
 
 2:
 <START>
-  . .
+
+
+
+
+.
+.
 <END>
 
 3:
 <START>
-  . . .
+
+
+
+.
+.
+.
 <END>
 
 4:
 <START>
-  . . . .
+
+
+.
+.
+.
+.
+<END>
+
+5:
+<START>
+
+.
+.
+.
+.
+.
+<END>
+
+6:
+<START>
+.
+.
+.
+.
+.
+.
 <END>

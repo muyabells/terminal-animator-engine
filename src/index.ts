@@ -3,8 +3,9 @@ import { generateStripes } from "./generators/stripe.js";
 import { composeWidgets, totalMSToFrameNumber } from "./widgets/composer.js";
 import { Player } from "./widgets/player.js";
 import { reverse } from "./editors/reverse.js";
-import { extend } from "./editors/extend.js";
+import { loop } from "./editors/extend.js";
 import { parseAniFile, parseStringToCells } from "./widgets/parser.js";
+import { playAudio } from "./widgets/audio.js";
 
 export {
     // essentials
@@ -23,8 +24,11 @@ export {
     Player,
 
     // frame editors
-    reverse, extend,
+    reverse, loop,
 
     // parsers
-    parseAniFile, parseStringToCells
+    parseAniFile, parseStringToCells,
+
+    // audio
+    playAudio
 }
