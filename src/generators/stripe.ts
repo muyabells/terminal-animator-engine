@@ -23,7 +23,7 @@ export function generateStripes(
     width: number, height: number,
     seed: number,
     character?: string
-) {
+): Cell[][] {
     const matrix: Cell[][] = []
 
     for (let y = 0; y < height; y++) {

@@ -9,13 +9,12 @@ export type Cell = {
 }
 export type Frame = {
     message: Cell[][],
-    coords: { x: number, y: number },
+    coords: { x: number, y: number }, // pull this out to be provided by the person
 }
 
-/**
- * frames is an array because those are "overlays"
- */
-export type AnimatedFrame = { 
+// the individual frames
+export type AnimatedFrame = {
+    // overlays
     frame: Frame[],
 };
 

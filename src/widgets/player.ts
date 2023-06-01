@@ -1,6 +1,6 @@
 import { Canvas } from "terminal-canvas";
-import { AnimatedFrame } from "../widgets/animated.js";
-import { drawFrame } from "../widgets/scene.js";
+import { AnimatedFrame } from "./animated.js";
+import { drawFrame } from "./renderer.js";
 
 export class Player {
     private canvas: Canvas;
@@ -47,7 +47,7 @@ export class Player {
             perf = performance.now() - past_perf;
 
             this.countTime(MS);
-            this.frame_count = ++this.frame_count % (composed_frames.length - 1);
+            this.frame_count = ++this.frame_count % composed_frames.length;
         }, MS)
     }
 }
