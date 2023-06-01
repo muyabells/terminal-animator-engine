@@ -23,26 +23,6 @@ const FRAMES25 = 40;
 const FRAMES15 = 66;
 const FRAMES3  = 333;
 
-// FRAME GENERATOR
-function stripeGenerator(
-    coords: { x: number, y: number }, 
-    total_frames: number,
-    seed: number
-) {
-    const main_frames: AnimatedFrame[] = [];
-    for (let i = 0; i < total_frames; i++) {
-        main_frames.push({
-            frame: [{
-                message: generateStripes(i, 12, 1, seed), 
-                coords: {
-                    x: (i + i + i + i) + coords.x,
-                    y: coords.y
-                },
-            }],
-        });
-    }
-    return main_frames;
-}
 
 function dot(coords: { x: number, y: number }) {
     return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())

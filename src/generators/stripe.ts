@@ -1,4 +1,4 @@
-import { Cell } from "../widgets/animated.js";
+import { AnimatedFrame, Cell } from "../widgets/animated.js";
 
 export function fract(x: number) {
     return x - Math.floor(x);
@@ -37,4 +37,24 @@ export function generateStripes(
         matrix.push(y_block_array);
     }
     return matrix;
+}
+
+export function stripeGenerator(
+    coords: { x: number, y: number }, 
+    total_frames: number,
+    seed: number
+) {
+    const main_frames: AnimatedFrame[] = [];
+    for (let i = 0; i < total_frames; i++) {
+        main_frames.push({
+            frame: [{
+                message: generateStripes(i, 12, 1, seed), 
+                coords: {
+                    x: (i + i + i + i) + coords.x,
+                    y: coords.y
+                },
+            }],
+        });
+    }
+    return main_frames;
 }
