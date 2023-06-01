@@ -4,6 +4,8 @@
 
 # Terminal Animator
 
+**A functional approach to animation.**
+
 > Built for animating Frums music!
 
 You can make your own animations in the terminal using this library. However, it's still very in the works.
