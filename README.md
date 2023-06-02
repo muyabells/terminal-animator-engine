@@ -4,11 +4,68 @@
 
 # Terminal Animator 📝🖋
 
-> **A functional approach to animation.**
+> **A functional approach to animation.** Aiming for high customizability.
 
 > This is built for animating videos with ASCII art.
 
 You can make your own animations in the terminal using this library. However, it's still very in the works.
+
+## Code Example
+
+```ts
+// creating the loading frames
+function loading(coords: { x: number, y: number }): AnimatedFrame[] {
+    return [
+        { 
+            // parseStringToCells is a helper method that is self explanatory
+            // cells are basically the "pixels" inside the canvas
+            frame: [{ message: parseStringToCells(`/`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`-`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`\\`), coords }]
+        },
+        ...
+    ]
+}
+
+// you could also get frames from an .ani file
+function clouds(coords: { x: number, y: number }) {
+    return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
+        .map(ani => { return {
+            frame: [{
+                message: ani,
+                coords: coords
+            }]}
+        });
+}
+
+// composes those frames into giant series of frames lasting 30 frames only
+const composed = composeWidgets({
+    overlays: [
+        { start_frame: 3, animation: new AnimatedWidget( // this will be abstracted away soon
+            loop( // repeats the loading animation 10 times
+                loading({ x: 2, y: 2 }), 10
+            )
+        )},
+        { start_frame: 0, animation: new AnimatedWidget(
+            loop(
+                clouds({ x: 2, y: 2 }), 10
+            )
+        )}
+    ],
+    length: 30,
+});
+
+// plays the animation with 15 FPS and a 100x100 canvas
+const player = new Player(100, 100);
+player.play(composed, FRAMES15);
+
+// you could also pass in the frames directly
+player.play(loading({ x: 2, y: 2 }), 10))
+```
 
 ## To Do Features
 - Sync audio and music together (Progress on this is the ms => frames function)
