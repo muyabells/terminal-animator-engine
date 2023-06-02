@@ -1,8 +1,5 @@
 import { AnimatedFrame, AnimatedWidget } from "./animated.js";
 
-/**
- * start_frame & start_ms shouldn't be specified together, it'll mess up calculations
- */
 type Overlay = {
     start_frame: number,
     animation: AnimatedWidget

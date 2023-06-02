@@ -23,8 +23,7 @@ const FRAMES25 = 40;
 const FRAMES15 = 66;
 const FRAMES3  = 333;
 
-
-function dot(coords: { x: number, y: number }) {
+function clouds(coords: { x: number, y: number }) {
     return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
         .map(ani => {
             return {
@@ -36,19 +35,41 @@ function dot(coords: { x: number, y: number }) {
         });
 }
 
-// TODO?: encode the save into .ani format
-// const composed = jsonfile.readFileSync("./frames/json/save.json");
+function loading(coords: { x: number, y: number }): AnimatedFrame[] {
+    return [
+        { 
+            frame: [{ message: parseStringToCells(`/`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`-`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`\\`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`|`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`/`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`-`), coords }]
+        },
+        { 
+            frame: [{ message: parseStringToCells(`\\`), coords }]
+        },
+    ]
+}
 
 const composed = composeWidgets({
-    overlays: Array.from({ length: 10 }, (v, k) => {
-        return { start_frame: k, animation: new AnimatedWidget(reverse(dot({ x: 3 + k + k, y: 1 }), 5)) }
-    }),
-    length: 50,
+    overlays: [
+        { start_frame: 0, animation: new AnimatedWidget(loop(clouds({ x: 10, y: 3 }), 10)) },
+        { start_frame: 3, animation: new AnimatedWidget(loop(loading({ x: 2, y: 2 }), 10)) },
+    ],
+    length: 30,
 });
 
-// jsonfile.writeFileSync("./frames/json/save.json", composed);
+const player = new Player(100, 100);
+player.play(composed, FRAMES15);
 
-
-const player = new Player(400, 100);
-// playAudio(createReadStream("./media/credits.wav"))
-player.play(composed, FRAMES30);
+// player.play(loop(loading({ x: 2, y: 2 }), 10), FRAMES15);
