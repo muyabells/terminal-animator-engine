@@ -12,6 +12,7 @@ You can make your own animations in the terminal using this library. However, it
 
 ## Code Example
 
+Full example is in the test/ folder.
 ```ts
 // creating the loading frames
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
@@ -23,9 +24,6 @@ function loading(coords: { x: number, y: number }): AnimatedFrame[] {
         },
         { 
             frame: [{ message: parseStringToCells(`-`), coords }]
-        },
-        { 
-            frame: [{ message: parseStringToCells(`\\`), coords }]
         },
         ...
     ]
@@ -45,7 +43,7 @@ function clouds(coords: { x: number, y: number }) {
 // composes those frames into giant series of frames lasting 30 frames only
 const composed = composeWidgets({
     overlays: [
-        { start_frame: 3, animation: new AnimatedWidget( // this will be abstracted away soon
+        { start_frame: 3, animation: new AnimatedWidget(
             loop( // repeats the loading animation 10 times
                 loading({ x: 2, y: 2 }), 10
             )
