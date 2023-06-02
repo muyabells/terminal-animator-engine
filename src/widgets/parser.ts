@@ -6,7 +6,7 @@ export function parseAniFile(
 ): Cell[][] [] {
     const frame_content_regex = /\d+:\s*<START>([\s\S]*?)<END>/g;
     const frame_matches = [...ani_output.matchAll(frame_content_regex)]
-        .map(v => v[1].trim());
+        .map(v => v[1]);
 
     const ani_frames = [];
     for (const frame of frame_matches) {
