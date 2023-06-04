@@ -73,7 +73,7 @@ const msg = "Your spells have no power over me since \nthe only thing i know for
 const composed = composeWidgets({
     layers: [
         {
-            start_frame: 0, animation: new AnimatedWidget(loop(
+            start_frame: 0, animation: new AnimatedWidget(loopReverse(
                 slow(
                     clouds({ x: 10, y: 3 }),
                     10),
