@@ -9,13 +9,15 @@ import {
     parseStringToCells,
     parseAniFile,
     loop,
-    playAudio
+    playAudio,
+    prolongFrames
 } from "../src/index.js";
 import jsonfile from "jsonfile";
 import {
     readFileSync,
     createReadStream,
 } from "fs";
+import { typewriter } from "../src/generators/typewriter.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -64,9 +66,11 @@ function loading(coords: { x: number, y: number }): AnimatedFrame[] {
 const composed = composeWidgets({
     overlays: [
         { start_frame: 0, animation: new AnimatedWidget(loop(clouds({ x: 10, y: 3 }), 10)) },
-        { start_frame: 3, animation: new AnimatedWidget(loop(loading({ x: 2, y: 2 }), 10)) },
+        { start_frame: 3, animation: new AnimatedWidget(
+            prolongFrames(reverse(typewriter("antagonist waa", { x: 10, y: 10 })), 10, 5)
+        )},
     ],
-    length: 30,
+    length: 50,
 });
 
 const player = new Player(100, 100);
