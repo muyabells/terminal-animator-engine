@@ -17,10 +17,11 @@ export function parseAniFile(
 }
 
 export function parseStringToCells(complete_strings: string): Cell[][] {
+    const cell: Cell[][] = [];
+
     const str = complete_strings
         .split("\n")
-        // .filter(v => v.length > 0 )
-    const cell: Cell[][] = [];
+        .map(v => v.replace("\r", "")); // removes duplication issue :)
 
     for (const y of str) {
         const al = [];
