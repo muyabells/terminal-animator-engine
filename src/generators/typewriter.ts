@@ -1,10 +1,16 @@
-import { AnimatedFrame } from "../index.js";
+import { AnimatedFrame, parseStringToCells } from "../index.js";
 
-export function typewriter(str: string): AnimatedFrame[] {
-    const typed = [];
-    const split_str = str.split("");
-
-    
-
-    return [];
+export function typewriter(str: string, coords: { x: number, y: number }): AnimatedFrame[] {
+    const typed: AnimatedFrame[] = [];
+    let index = 0;
+    while (index < str.length) {
+        typed.push({
+            frame: [{
+                message: parseStringToCells(str.slice(index)),
+                coords
+            }]
+        });
+        index++;
+    }
+    return typed;
 }
