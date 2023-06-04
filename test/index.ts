@@ -1,16 +1,19 @@
-import { 
-    AnimatedFrame, 
+import {
+    AnimatedFrame,
     AnimatedWidget,
     generateStripes,
-    composeWidgets, 
+    composeWidgets,
     totalMSToFrameNumber,
     Player,
-    reverse, 
+    reverse,
     parseStringToCells,
     parseAniFile,
     loop,
     playAudio,
-    prolongFrames
+    prolongFrame,
+    slow,
+    fast,
+    loopReverse
 } from "../src/index.js";
 import jsonfile from "jsonfile";
 import {
@@ -23,7 +26,7 @@ const FRAMES60 = 16;
 const FRAMES30 = 33;
 const FRAMES25 = 40;
 const FRAMES15 = 66;
-const FRAMES3  = 333;
+const FRAMES3 = 333;
 
 function clouds(coords: { x: number, y: number }) {
     return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
@@ -39,41 +42,93 @@ function clouds(coords: { x: number, y: number }) {
 
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
     return [
-        { 
-            frame: [{ message: parseStringToCells(`/`), coords }]
-        },
-        { 
-            frame: [{ message: parseStringToCells(`-`), coords }]
-        },
-        { 
-            frame: [{ message: parseStringToCells(`\\`), coords }]
-        },
-        { 
+        {
             frame: [{ message: parseStringToCells(`|`), coords }]
         },
-        { 
+        {
             frame: [{ message: parseStringToCells(`/`), coords }]
         },
-        { 
+        {
             frame: [{ message: parseStringToCells(`-`), coords }]
         },
-        { 
+        {
+            frame: [{ message: parseStringToCells(`\\`), coords }]
+        },
+        {
+            frame: [{ message: parseStringToCells(`|`), coords }]
+        },
+        {
+            frame: [{ message: parseStringToCells(`/`), coords }]
+        },
+        {
+            frame: [{ message: parseStringToCells(`-`), coords }]
+        },
+        {
             frame: [{ message: parseStringToCells(`\\`), coords }]
         },
     ]
 }
 
+const msg = "Your spells have no power over me since \nthe only thing i know for real...\nTHERE WILL BE BLOODSHED\nTHE MAN IN THE MIRROR NODS HIS HEAD";
 const composed = composeWidgets({
-    overlays: [
-        { start_frame: 0, animation: new AnimatedWidget(loop(clouds({ x: 10, y: 3 }), 10)) },
-        { start_frame: 3, animation: new AnimatedWidget(
-            prolongFrames(reverse(typewriter("antagonist waa", { x: 10, y: 10 })), 10, 5)
-        )},
+    layers: [
+        {
+            start_frame: 0, animation: new AnimatedWidget(loop(
+                slow(
+                    clouds({ x: 10, y: 3 }),
+                    10),
+                30))
+        },
+        {
+            start_frame: 3, animation: new AnimatedWidget(
+                loopReverse(
+                    reverse(
+                        fast(
+                            prolongFrame( // smell.
+                                prolongFrame(
+                                    typewriter(
+                                        msg
+                                            .split("\n")
+                                            .reverse()
+                                            .join("\n"),
+                                    { x: 30, y: 6 }),
+                                0, 20),
+                            152, 20),
+                        1)
+                    ),
+                10)
+            )
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(
+                slow(
+                    loop(
+                        loading({ x: 30, y: 3 }), 
+                    30),
+                6)
+            )
+        },
+        {
+            start_frame: 2, animation: new AnimatedWidget(
+                slow(
+                    loop(
+                        loading({ x: 40, y: 3 }), 
+                    30),
+                6)
+            )
+        },
+        {
+            start_frame: 4, animation: new AnimatedWidget(
+                slow(
+                    loop(
+                        loading({ x: 50, y: 3 }), 
+                    30),
+                6)
+            )
+        },
     ],
-    length: 50,
+    length: 180,
 });
 
-const player = new Player(100, 100);
+const player = new Player(100, 50);
 player.play(composed, FRAMES15);
-
-// player.play(loop(loading({ x: 2, y: 2 }), 10), FRAMES15);
