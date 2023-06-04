@@ -6,8 +6,7 @@ literally just have this format.
 
 0:
 <START>
-       |>>>
-     __|_____
+     ________
    _( (   __ )__
   (__  __   ) ___)
    (__ (__  __)
@@ -16,8 +15,7 @@ literally just have this format.
 
 1:
 <START>
-       |>>>
-    ___|____
+    ________
   _( (   __ )__
  (__  __   ) ___)
    (__ (__  __)
@@ -26,8 +24,7 @@ literally just have this format.
 
 2:
 <START>
-       |>>>
-     __|_____
+     ________
    _( (   __ )__
   (__  __  ) __ )
    (__ (__  __)
@@ -36,8 +33,7 @@ literally just have this format.
 
 2:
 <START>
-      |>>>
-    __|_____
+    ________
   _( (   __ )__
  (__  __  ) __ )
   (__ (__  __)
@@ -46,8 +42,7 @@ literally just have this format.
 
 3:
 <START>
-     |>>>
-   __|_____
+   ________
  _( (   __ )__
 (__  __  ) __ )
  (__ (__  __)

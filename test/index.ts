@@ -40,6 +40,18 @@ function clouds(coords: { x: number, y: number }) {
         });
 }
 
+function flag(coords: { x: number, y: number }) {
+    return parseAniFile(readFileSync("./frames/ani/flag.ani").toString())
+        .map(ani => {
+            return {
+                frame: [{
+                    message: ani,
+                    coords: coords
+                }]
+            }
+        });
+}
+
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
     return [
         {
@@ -69,15 +81,55 @@ function loading(coords: { x: number, y: number }): AnimatedFrame[] {
     ]
 }
 
-const msg = "Your spells have no power over me since \nthe only thing i know for real...\nTHERE WILL BE BLOODSHED\nTHE MAN IN THE MIRROR NODS HIS HEAD";
+const msg = `
+Terminal Animator Demo
+Made by muyabells.
+
+    animating on the terminal. :D          
+Features done: Ease-of-use of
+Features needed: Color.               
+`;
 const composed = composeWidgets({
     layers: [
         {
             start_frame: 0, animation: new AnimatedWidget(loopReverse(
                 slow(
                     clouds({ x: 10, y: 3 }),
-                    10),
-                30))
+                10),
+            30))
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(loopReverse(
+                slow(
+                    clouds({ x: 15, y: 5 }),
+                8),
+            30))
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(loopReverse(
+                slow(
+                    clouds({ x: 5, y: 2 }),
+                12),
+            30))
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(loopReverse(
+                slow(
+                    clouds({ x: 3, y: 8 }),
+                7),
+            30))
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(loopReverse(
+                slow(
+                    clouds({ x: 12, y: 12 }),
+                15),
+            30))
+        },
+        {
+            start_frame: 0, animation: new AnimatedWidget(prolongFrame(
+                flag({ x: 35, y: 13 }),
+            0, 400))
         },
         {
             start_frame: 3, animation: new AnimatedWidget(
@@ -91,9 +143,9 @@ const composed = composeWidgets({
                                             .split("\n")
                                             .reverse()
                                             .join("\n"),
-                                    { x: 30, y: 6 }),
+                                    { x: 40, y: 6 }),
                                 0, 20),
-                            152, 20),
+                            14, 20),
                         1)
                     ),
                 10)
@@ -127,7 +179,7 @@ const composed = composeWidgets({
             )
         },
     ],
-    length: 180,
+    length: 400,
 });
 
 const player = new Player(100, 50);
