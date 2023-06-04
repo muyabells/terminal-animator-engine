@@ -1,6 +1,6 @@
 import { AnimatedFrame } from "../widgets/animated.js";
 
-export function reverse(
+export function loopReverse(
     frames: AnimatedFrame[], 
     repeat: number
 ): AnimatedFrame[] {
@@ -15,4 +15,8 @@ export function reverse(
         total_frames.push(...reversed_frames)
     }
     return total_frames;
+}
+
+export function reverse(frames: AnimatedFrame[]): AnimatedFrame[] {
+    return frames.slice().reverse();
 }

@@ -13,3 +13,17 @@ export function loop(
     }
     return repeated_frames;
 }
+
+export function prolongFrames(
+    frames: AnimatedFrame[],
+    min: number,
+    repeat: number,
+): AnimatedFrame[] {
+    const result_frames = [];
+    result_frames.push(...frames.slice(0, min));
+    for (let i = 0; i < repeat; i++) {
+        result_frames.push(...frames.slice(min, min + 1))
+    }
+
+    return result_frames;
+}
