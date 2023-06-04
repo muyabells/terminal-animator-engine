@@ -14,16 +14,18 @@ export function loop(
     return repeated_frames;
 }
 
-export function prolongFrames(
+export function prolongFrame(
     frames: AnimatedFrame[],
-    min: number,
+    frame_number: number,
     repeat: number,
 ): AnimatedFrame[] {
     const result_frames = [];
-    result_frames.push(...frames.slice(0, min));
+    
+    result_frames.push(...frames.slice(0, frame_number));
     for (let i = 0; i < repeat; i++) {
-        result_frames.push(...frames.slice(min, min + 1))
+        result_frames.push(...frames.slice(frame_number, frame_number + 1))
     }
+    result_frames.push(...frames.slice(frame_number + 1))
 
     return result_frames;
 }
