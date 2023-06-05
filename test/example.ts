@@ -26,39 +26,31 @@ const FRAMES15 = 66;
 const FRAMES3  = 333;
 
 function clouds(coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
-        .map(ani => {
-            return {
-                frame: [{
-                    message: ani,
-                    coords: coords
-                }]
-            }
-        });
+    return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString(), { x: 10, y: 10 })
 }
 
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
     return [
         { 
-            frame: [{ message: parseStringToCells(`/`), coords }]
+            overlays: [{ message: parseStringToCells(`/`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`-`), coords }]
+            overlays: [{ message: parseStringToCells(`-`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`\\`), coords }]
+            overlays: [{ message: parseStringToCells(`\\`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`|`), coords }]
+            overlays: [{ message: parseStringToCells(`|`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`/`), coords }]
+            overlays: [{ message: parseStringToCells(`/`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`-`), coords }]
+            overlays: [{ message: parseStringToCells(`-`), coords }]
         },
         { 
-            frame: [{ message: parseStringToCells(`\\`), coords }]
+            overlays: [{ message: parseStringToCells(`\\`), coords }]
         },
     ]
 }
