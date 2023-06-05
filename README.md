@@ -4,7 +4,7 @@
 
 # Terminal Animator 📝🖋
 
-> **A functional approach to animation.** Aiming for high customizability.
+> **A functional approach to animation.** Aiming for high customizability and minimal boilerplate.
 
 > This is built for animating videos with ASCII art.
 
@@ -66,6 +66,8 @@ player.play(loading({ x: 2, y: 2 }), 10))
 ```
 
 ## To Do Features
+- Color support
+- An easier way to build frames (The loading function in test/example.ts)
 - Sync audio and music together (Progress on this is the ms => frames function)
 
 ## How It Works
