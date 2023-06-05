@@ -28,20 +28,8 @@ const FRAMES25 = 40;
 const FRAMES15 = 66;
 const FRAMES3 = 333;
 
-function clouds(coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
-        .map(ani => {
-            return {
-                frame: [{
-                    message: ani,
-                    coords: coords
-                }]
-            }
-        });
-}
-
-function flag(coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync("./frames/ani/flag.ani").toString())
+function importAnimation(file: string, coords: { x: number, y: number }) {
+    return parseAniFile(readFileSync(`./frames/ani/${file}.ani`).toString())
         .map(ani => {
             return {
                 frame: [{
@@ -85,50 +73,60 @@ const msg = `
 Terminal Animator Demo
 Made by muyabells.
 
-    animating on the terminal. :D          
+    animating on the terminal. :D
 Features done: Ease-of-use of
-Features needed: Color.               
+Features needed: Color.
 `;
+
+const all_clouds = [
+    {
+        start_frame: 0, animation: new AnimatedWidget(loopReverse(
+            slow(
+                importAnimation("anim1", { x: 10, y: 3 }),
+            10),
+        30))
+    },
+    {
+        start_frame: 0, animation: new AnimatedWidget(loopReverse(
+            slow(
+                importAnimation("anim1", { x: 15, y: 5 }),
+            8),
+        30))
+    },
+    {
+        start_frame: 0, animation: new AnimatedWidget(loopReverse(
+            slow(
+                importAnimation("anim1", { x: 5, y: 2 }),
+            12),
+        30))
+    },
+    {
+        start_frame: 0, animation: new AnimatedWidget(loopReverse(
+            slow(
+                importAnimation("anim1", { x: 3, y: 8 }),
+            7),
+        30))
+    },
+    {
+        start_frame: 0, animation: new AnimatedWidget(loopReverse(
+            slow(
+                importAnimation("anim1", { x: 12, y: 12 }),
+            15),
+        30))
+    }
+]
+
 const composed = composeWidgets({
     layers: [
         {
-            start_frame: 0, animation: new AnimatedWidget(loopReverse(
-                slow(
-                    clouds({ x: 10, y: 3 }),
-                10),
-            30))
+            start_frame: 0, animation: new AnimatedWidget(prolongFrame(
+                importAnimation("sun", { x: 60, y: 4 }),
+            0, 400))
         },
-        {
-            start_frame: 0, animation: new AnimatedWidget(loopReverse(
-                slow(
-                    clouds({ x: 15, y: 5 }),
-                8),
-            30))
-        },
-        {
-            start_frame: 0, animation: new AnimatedWidget(loopReverse(
-                slow(
-                    clouds({ x: 5, y: 2 }),
-                12),
-            30))
-        },
-        {
-            start_frame: 0, animation: new AnimatedWidget(loopReverse(
-                slow(
-                    clouds({ x: 3, y: 8 }),
-                7),
-            30))
-        },
-        {
-            start_frame: 0, animation: new AnimatedWidget(loopReverse(
-                slow(
-                    clouds({ x: 12, y: 12 }),
-                15),
-            30))
-        },
+        ...all_clouds,
         {
             start_frame: 0, animation: new AnimatedWidget(prolongFrame(
-                flag({ x: 35, y: 13 }),
+                importAnimation("flag", { x: 35, y: 13 }),
             0, 400))
         },
         {
@@ -145,7 +143,7 @@ const composed = composeWidgets({
                                             .join("\n"),
                                     { x: 40, y: 6 }),
                                 0, 20),
-                            14, 20),
+                            msg.length + 18, 20),
                         1)
                     ),
                 10)
@@ -181,6 +179,8 @@ const composed = composeWidgets({
     ],
     length: 400,
 });
+
+// jsonfile.writeFileSync("./frames/json/composed.json", composed);
 
 const player = new Player(100, 50);
 player.play(composed, FRAMES15);
