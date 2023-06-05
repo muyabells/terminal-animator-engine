@@ -21,6 +21,7 @@ import {
     createReadStream,
 } from "fs";
 import { typewriter } from "../src/generators/typewriter.js";
+import { parseStringsToFrames } from "../src/widgets/parser.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -29,44 +30,11 @@ const FRAMES15 = 66;
 const FRAMES3 = 333;
 
 function importAnimation(file: string, coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync(`./frames/ani/${file}.ani`).toString())
-        .map(ani => {
-            return {
-                frame: [{
-                    message: ani,
-                    coords: coords
-                }]
-            }
-        });
+    return parseAniFile(readFileSync(`./frames/ani/${file}.ani`).toString(), coords);
 }
 
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
-    return [
-        {
-            frame: [{ message: parseStringToCells(`|`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`/`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`-`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`\\`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`|`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`/`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`-`), coords }]
-        },
-        {
-            frame: [{ message: parseStringToCells(`\\`), coords }]
-        },
-    ]
+    return parseStringsToFrames(["/", "-", "\\", "|", "/", "-", "\\"], coords);
 }
 
 const msg = `
