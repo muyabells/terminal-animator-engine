@@ -1,0 +1,16 @@
+NAME: TEST_ANIM
+
+literally just have this format.
+
+[FRAMES]
+
+0:
+<START>
+        |     
+   `. ._|_* .'  
+ . * .'   `.  *
+-----|     |-----
+ .  *`.___.' *  
+    .'  |* `.  
+        |
+<END>
