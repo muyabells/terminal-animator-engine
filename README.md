@@ -8,7 +8,10 @@
 
 > This is built for animating videos with ASCII art.
 
-You can make your own animations in the terminal using this library. However, it's still very in the works.
+You can make your own animations in the terminal using this library. 
+However, it's still very in the works. 
+
+Performance is not a priority right now, so if you want to change perf greedy code, please make it readable.
 
 ## Code Example
 
@@ -68,7 +71,6 @@ player.play(loading({ x: 2, y: 2 }), 10))
 ## To Do Features
 - Color support
 - An easier way to build frames (The loading function in test/example.ts)
-- Sync audio and music together (Progress on this is the ms => frames function)
 
 ## How It Works
 ![terminal-animator-02](https://github.com/muyabells/terminal-animator-engine/assets/134768752/2e6605f5-b8d8-4afa-85f6-1a72bb5d1a4c)
