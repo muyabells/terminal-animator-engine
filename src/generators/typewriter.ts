@@ -5,7 +5,7 @@ export function typewriter(str: string, coords: { x: number, y: number }): Anima
     let index = 0;
     while (index < str.length) {
         typed.push({
-            frame: [{
+            overlays: [{
                 message: parseStringToCells(str.slice(index)),
                 coords
             }]

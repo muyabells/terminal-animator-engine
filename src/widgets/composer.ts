@@ -22,8 +22,8 @@ export function composeWidgets(widget: Compose) {
                 && (v.start_frame + (v.animation.getFrames().length)) > frame;
         });
         fr.push({
-            frame: activated_widget.flatMap(v => {
-                const fra = v.animation.getFrameNumber(v.animation.getFrameCount()).frame
+            overlays: activated_widget.flatMap(v => {
+                const fra = v.animation.getFrameNumber(v.animation.getFrameCount()).overlays
                 v.animation.addFrameCount();
                 return fra;
             }),

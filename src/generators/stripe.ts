@@ -47,7 +47,7 @@ export function stripeGenerator(
     const main_frames: AnimatedFrame[] = [];
     for (let i = 0; i < total_frames; i++) {
         main_frames.push({
-            frame: [{
+            overlays: [{
                 message: generateStripes(i, 12, 1, seed), 
                 coords: {
                     x: (i + i + i + i) + coords.x,

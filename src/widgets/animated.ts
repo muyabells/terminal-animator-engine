@@ -15,7 +15,7 @@ export type Frame = {
 // the individual frames
 export type AnimatedFrame = {
     // overlays
-    frame: Frame[],
+    overlays: Frame[],
 };
 
 export class AnimatedWidget {
