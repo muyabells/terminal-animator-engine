@@ -22,6 +22,8 @@ import {
 } from "fs";
 import { typewriter } from "../src/generators/typewriter.js";
 import { parseStringsToFrames } from "../src/widgets/parser.js";
+import { fadeIn } from "../src/editors/fade.js";
+import { randRange } from "../src/helpers/random.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -37,6 +39,26 @@ function loading(coords: { x: number, y: number }): AnimatedFrame[] {
     return parseStringsToFrames(["/", "-", "\\", "|", "/", "-", "\\"], coords);
 }
 
+function makeSeriesOfClouds(
+    count: number,
+    min_x: number, min_y: number,
+    max_x: number, max_y: number,
+) {
+    const all_clouds = [];
+    for (let i = 0; i < count; i++) {
+        all_clouds.push({
+            start_frame: 0, animation: new AnimatedWidget(fadeIn(
+                loopReverse(
+                    slow(
+                        importAnimation("anim1", { x: randRange(min_x, max_x), y: randRange(min_y, max_y) }),
+                    randRange(10, 13)),
+                30),
+            randRange(1, 6)))
+        })
+    }
+    return all_clouds;
+}
+
 const msg = `
 Terminal Animator Demo
 Made by muyabells.
@@ -46,52 +68,17 @@ Features done: Ease-of-use of
 Features needed: Color.
 `;
 
-const all_clouds = [
-    {
-        start_frame: 0, animation: new AnimatedWidget(loopReverse(
-            slow(
-                importAnimation("anim1", { x: 10, y: 3 }),
-            10),
-        30))
-    },
-    {
-        start_frame: 0, animation: new AnimatedWidget(loopReverse(
-            slow(
-                importAnimation("anim1", { x: 15, y: 5 }),
-            8),
-        30))
-    },
-    {
-        start_frame: 0, animation: new AnimatedWidget(loopReverse(
-            slow(
-                importAnimation("anim1", { x: 5, y: 2 }),
-            12),
-        30))
-    },
-    {
-        start_frame: 0, animation: new AnimatedWidget(loopReverse(
-            slow(
-                importAnimation("anim1", { x: 3, y: 8 }),
-            7),
-        30))
-    },
-    {
-        start_frame: 0, animation: new AnimatedWidget(loopReverse(
-            slow(
-                importAnimation("anim1", { x: 12, y: 12 }),
-            15),
-        30))
-    }
-]
-
 const composed = composeWidgets({
     layers: [
         {
-            start_frame: 0, animation: new AnimatedWidget(prolongFrame(
-                importAnimation("sun", { x: 60, y: 4 }),
-            0, 400))
+            start_frame: 0, animation: new AnimatedWidget(
+                fadeIn(
+                    prolongFrame(
+                        importAnimation("sun", { x: 80, y: 4 }),
+                    0, 400),
+                1)
+            )
         },
-        ...all_clouds,
         {
             start_frame: 0, animation: new AnimatedWidget(prolongFrame(
                 importAnimation("flag", { x: 35, y: 13 }),
@@ -117,6 +104,9 @@ const composed = composeWidgets({
                 10)
             )
         },
+        ...makeSeriesOfClouds(10, 
+            8,  0, 
+            26, 20),
         {
             start_frame: 0, animation: new AnimatedWidget(
                 slow(
