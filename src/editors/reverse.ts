@@ -1,5 +1,13 @@
 import { AnimatedFrame } from "../widgets/animated.js";
 
+/**
+ * Loops the animation in a natural way.
+ * 
+ * Does not modify the original array.
+ * @param frames 
+ * @param repeat 
+ * @returns 
+ */
 export function loopReverse(
     frames: AnimatedFrame[], 
     repeat: number
