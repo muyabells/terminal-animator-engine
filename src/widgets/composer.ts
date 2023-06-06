@@ -23,7 +23,7 @@ export function composeWidgets(widget: Compose) {
         });
         fr.push({
             overlays: activated_widget.flatMap(v => {
-                const fra = v.animation.getFrameNumber(v.animation.getFrameCount()).overlays
+                const fra = v.animation.getFrameNumber(v.animation.getFrameCount()).overlays;
                 v.animation.addFrameCount();
                 return fra;
             }),
