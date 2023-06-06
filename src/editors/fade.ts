@@ -2,40 +2,73 @@ import { AnimatedFrame, Cell, Frame } from "../widgets/animated.js";
 import { parseStringToCells, parseStringsToFrames } from "../widgets/parser.js";
 import { loop } from "./extend.js";
 
-function loading(coords: { x: number, y: number }): AnimatedFrame[] {
-    return parseStringsToFrames(["/", "-", "\\", "|", "/", "-", "\\"], coords);
-}
+/**
+ * Adds a fade-in before the animation starts.
+ * 
+ * Modifies the original array.
+ * @param frames 
+ * @returns 
+ */
+export function fadeIn(
+    frames: AnimatedFrame[],
+    speed: number
+) {
+    const first_frame = structuredClone(frames[0]); // why clone the thing when you can just modify it??
+    const filled_maps = mapFilledCells(first_frame);
 
-fadeIn(loading({ x: 5, y: 5 }))
+    for (let overlay_index = 0; overlay_index < filled_maps.length; overlay_index++) {
+        const map = filled_maps[overlay_index];
+        const overlay = first_frame.overlays[overlay_index];
+        let speed_counter = 0;
+        
+        for (let i = 0; i < map.length; i++) { // clearing out everything, you wanna get everything in this step
+            const coords = map[i];
 
-export function fadeIn(frames: AnimatedFrame[]) {
-    const first_frame = frames[0];
-    const filled_map = mapFilledCells(first_frame);
-
-    first_frame.overlays[0].message[filled_map[0].x][filled_map[0].y]
+            const filled_cell = overlay.message[coords.y][coords.x];
+            filled_cell.f = " ";
+            if (speed_counter >= speed) {
+                frames.unshift({
+                    overlays: structuredClone(first_frame.overlays)
+                });
+                speed_counter = 0;
+            }
+            speed_counter++;
+        }
+    }
+    
+    return frames;
 }
 
 export function fadeOut(frames: AnimatedFrame[]) {
     
 }
 
+function sliceRandomly(str: number[]) {
+    
+}
+
 function mapFilledCells(frame: AnimatedFrame) {
-    const filled_cells: { x: number, y: number }[] = [];
+    const mapped_overlays: { x: number, y: number }[][] = [];
 
     // mapping out every non-whitespace character in the frame
     // and turning it into coordinates to use for fade transitions.
 
-    for (const content of frame.overlays) { // frame is an overlay, so you should take into account that too!
+    for (let i = 0; i < frame.overlays.length; i++) { // overlays, so you should take that into account too!
+        const mapped_frame: { x: number, y: number }[] = []; 
+        const content = frame.overlays[i];
+
         for (let y = 0; y < content.message.length; y++) {
             const x_axis = content.message[y];
             for (let x = 0; x < x_axis.length; x++) {
                 const cell = x_axis[x];
                 if (cell.f.search(" ") === -1) {
-                    filled_cells.push({ x, y });
+                    mapped_frame.push({ x, y });
                 }
             }
         }
+
+        mapped_overlays.push(mapped_frame);
     }
 
-    return filled_cells;
+    return mapped_overlays;
 }
