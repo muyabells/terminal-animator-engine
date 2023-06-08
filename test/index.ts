@@ -22,8 +22,11 @@ import {
 } from "fs";
 import { typewriter } from "../src/generators/typewriter.js";
 import { parseStringsToFrames } from "../src/widgets/parser.js";
-import { fadeIn } from "../src/editors/fade.js";
+import { fadeIn, fadeOut } from "../src/editors/fade.js";
 import { randRange } from "../src/helpers/random.js";
+import { prolongFrames } from "../src/editors/extend.js";
+import { generateWhiteFrames } from "../src/generators/white.js";
+import { slider } from "../src/generators/slider.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -68,77 +71,84 @@ Features done: Ease-of-use of
 Features needed: Color.
 `;
 
-const composed = composeWidgets({
+const features = new AnimatedWidget(composeWidgets({
     layers: [
         {
             start_frame: 0, animation: new AnimatedWidget(
                 fadeIn(
                     prolongFrame(
-                        importAnimation("sun", { x: 80, y: 4 }),
+                        importAnimation("sun", { x: 60, y: 0 }),
                     0, 400),
-                1)
+                5)
             )
         },
         {
             start_frame: 0, animation: new AnimatedWidget(prolongFrame(
-                importAnimation("flag", { x: 35, y: 13 }),
+                importAnimation("flag", { x: 35, y: 30 }),
             0, 400))
+        },
+    ],
+    length: 400
+}));
+
+const composed = composeWidgets({
+    layers: [
+        { start_frame: 0, animation: features },
+        { start_frame: 0, animation: new AnimatedWidget(
+                loop(
+                    slow(
+                        slider(40, 0, "Plus, there's just something I enjoy about people who are incredibly honest and straightforward to the point of being weird fuckers whomst embrace their awful parts ", { x: 10, y: 40 }),
+                    2),
+                10)
+            )
         },
         {
             start_frame: 3, animation: new AnimatedWidget(
                 loopReverse(
                     reverse(
                         fast(
-                            prolongFrame( // smell.
-                                prolongFrame(
-                                    typewriter(
-                                        msg
-                                            .split("\n")
-                                            .reverse()
-                                            .join("\n"),
-                                    { x: 40, y: 6 }),
-                                0, 20),
-                            msg.length + 18, 20),
+                            prolongFrames(
+                                typewriter(
+                                    msg
+                                        .split("\n")
+                                        .reverse()
+                                        .join("\n"),
+                                { x: 5, y: 10 }),
+
+                                [
+                                    { n: 131, repeat: 30 },
+                                    { n: 0, repeat: 30 },
+                                ]
+                            ),
                         1)
                     ),
                 10)
             )
         },
         ...makeSeriesOfClouds(10, 
-            8,  0, 
-            26, 20),
+            2,  0, 
+            50, 3),
+        {
+            start_frame: 360, animation: new AnimatedWidget(
+                prolongFrame(
+                    fadeIn(
+                        generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1),
+                    250),
+                19, 60)
+            )
+        },
         {
             start_frame: 0, animation: new AnimatedWidget(
-                slow(
-                    loop(
-                        loading({ x: 30, y: 3 }), 
-                    30),
-                6)
+                fadeOut(
+                    generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1),
+                250),
             )
-        },
-        {
-            start_frame: 2, animation: new AnimatedWidget(
-                slow(
-                    loop(
-                        loading({ x: 40, y: 3 }), 
-                    30),
-                6)
-            )
-        },
-        {
-            start_frame: 4, animation: new AnimatedWidget(
-                slow(
-                    loop(
-                        loading({ x: 50, y: 3 }), 
-                    30),
-                6)
-            )
-        },
+        }
     ],
     length: 400,
 });
 
-// jsonfile.writeFileSync("./frames/json/composed.json", composed);
+jsonfile.writeFileSync("./frames/json/composed.json", composed);
 
-const player = new Player(100, 50);
+const player = new Player(80, 60);
 player.play(composed, FRAMES15);
