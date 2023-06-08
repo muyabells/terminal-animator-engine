@@ -1,3 +1,4 @@
+import { randRange } from "../helpers/random.js";
 import { AnimatedFrame, Cell, Frame } from "../widgets/animated.js";
 import { parseStringToCells, parseStringsToFrames } from "../widgets/parser.js";
 import { loop } from "./extend.js";
@@ -19,13 +20,13 @@ export function fadeIn(
     for (let overlay_index = 0; overlay_index < filled_maps.length; overlay_index++) {
         const map = filled_maps[overlay_index];
         const overlay = first_frame.overlays[overlay_index];
-        let speed_counter = 0;
         
-        for (let i = 0; i < map.length; i++) { // clearing out everything, you wanna get everything in this step
-            const coords = map[i];
+        let speed_counter = 0;
 
+        while (map.length > 0) {
+            const coords = map.splice(randRange(0, map.length), 1)[0];
             const filled_cell = overlay.message[coords.y][coords.x];
-            filled_cell.f = " ";
+            filled_cell.f = "";
             if (speed_counter >= speed) {
                 frames.unshift({
                     overlays: structuredClone(first_frame.overlays)
@@ -39,8 +40,37 @@ export function fadeIn(
     return frames;
 }
 
-export function fadeOut(frames: AnimatedFrame[]) {
+export function fadeOut(
+    frames: AnimatedFrame[],
+    speed: number
+) { // duplication issue
+    const last_frame = structuredClone(frames.at(-1)); // starting from the end
+    if (last_frame === undefined)
+        throw Error("Your frames are empty, we can't fade out emptiness!");
     
+    const filled_maps = mapFilledCells(last_frame);
+
+    for (let overlay_index = 0; overlay_index < filled_maps.length; overlay_index++) {
+        const map = filled_maps[overlay_index];
+        const overlay = last_frame.overlays[overlay_index];
+        
+        let speed_counter = 0;
+
+        while (map.length > 0) {
+            const coords = map.splice(randRange(0, map.length), 1)[0];
+            const filled_cell = overlay.message[coords.y][coords.x];
+            filled_cell.f = "";
+            if (speed_counter >= speed) {
+                frames.push({ // pushing the frames at the end
+                    overlays: structuredClone(last_frame.overlays)
+                });
+                speed_counter = 0;
+            }
+            speed_counter++;
+        }
+    }
+    
+    return frames;
 }
 
 function sliceRandomly(str: number[]) {
