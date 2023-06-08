@@ -29,3 +29,30 @@ export function prolongFrame(
 
     return result_frames;
 }
+
+/**
+ * Weak copy.
+ * @param frames 
+ * @param prolonged_frames 
+ */
+export function prolongFrames(
+    frames: AnimatedFrame[],
+    prolonged_frames: { n: number, repeat: number }[]
+) {
+    const result_frames: AnimatedFrame[] = [];
+
+    for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i];
+        const frame_to_prolong = prolonged_frames.find(v => v.n === i);
+        if (frame_to_prolong) {
+            for (let repeat = 0; repeat < frame_to_prolong.repeat; repeat++) {
+                result_frames.push(frame);
+            }
+            continue;
+        }
+
+        result_frames.push(frame);
+    }
+
+    return result_frames;
+}
