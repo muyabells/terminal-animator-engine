@@ -13,20 +13,20 @@ import {
     prolongFrame,
     slow,
     fast,
-    loopReverse
+    loopReverse,
+    typewriter,
+    parseStringsToFrames,
+    fadeIn, fadeOut,
+    randRange,
+    prolongFrames,
+    generateWhiteFrames,
+    slider
 } from "../src/index.js";
 import jsonfile from "jsonfile";
 import {
     readFileSync,
     createReadStream,
 } from "fs";
-import { typewriter } from "../src/generators/typewriter.js";
-import { parseStringsToFrames } from "../src/widgets/parser.js";
-import { fadeIn, fadeOut } from "../src/editors/fade.js";
-import { randRange } from "../src/helpers/random.js";
-import { prolongFrames } from "../src/editors/extend.js";
-import { generateWhiteFrames } from "../src/generators/white.js";
-import { slider } from "../src/generators/slider.js";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
