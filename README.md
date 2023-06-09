@@ -13,6 +13,10 @@ However, it's still very in the works.
 
 Performance is not a priority right now, so if you want to change perf greedy code, please make it readable.
 
+
+## High-Priority: To Do Features
+- Color support
+
 ## Code Example
 
 Full example is in the test/ folder.
@@ -67,10 +71,6 @@ player.play(composed, FRAMES15);
 // you could also pass in the frames directly
 player.play(loading({ x: 2, y: 2 }), 10))
 ```
-
-## To Do Features
-- Color support
-- An easier way to build frames (The loading function in test/example.ts)
 
 ## How It Works
 ![terminal-animator-02](https://github.com/muyabells/terminal-animator-engine/assets/134768752/2e6605f5-b8d8-4afa-85f6-1a72bb5d1a4c)
