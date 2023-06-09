@@ -9,7 +9,7 @@
 > This is built for animating videos with ASCII art.
 
 You can make your own animations in the terminal using this library. 
-However, it's still very in the works. 
+However, it's still ~~very in the works~~ almost done! 
 
 Performance is not a priority right now, so if you want to change perf greedy code, please make it readable.
 
