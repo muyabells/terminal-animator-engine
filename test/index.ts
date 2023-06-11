@@ -35,7 +35,7 @@ const FRAMES15 = 66;
 const FRAMES3 = 333;
 
 function importAnimation(file: string, coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync(`./frames/ani/${file}.ani`).toString(), coords);
+    return parseAniFile(readFileSync(`./frames/ani/${file}.tani`).toString(), coords);
 }
 
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
@@ -148,7 +148,7 @@ const composed = composeWidgets({
     length: 400,
 });
 
-jsonfile.writeFileSync("./frames/json/composed.json", composed);
+// jsonfile.writeFileSync("./frames/json/composed.json", composed);
 
 const player = new Player(80, 60);
 player.play(composed, FRAMES15);
