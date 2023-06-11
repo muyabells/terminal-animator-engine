@@ -2,7 +2,7 @@
     <img src="https://github.com/muyabells/terminal-animator-engine/assets/134768752/b14cae44-ac9c-43f0-9033-8f08c3f38819" width="200"/>
 </p>
 
-# Terminal Animator 📝🖋
+# Terminal Animator 📜🖊
 
 > **A functional approach to animation.** Aiming for high customizability and minimal boilerplate.
 
@@ -11,55 +11,34 @@
 You can make your own animations in the terminal using this library. 
 However, it's still ~~very in the works~~ almost done! 
 
-Performance is not a priority right now, so if you want to change perf greedy code, please make it readable.
+Performance is not a priority right now, so if you want to change bad performing code, please make it readable.
 
 
 ## High-Priority: To Do Features
-- Color support
+- Color support `(25% complete * parseStringToCells completed!)`
 
 ## Code Example
 
-Full example is in the test/ folder.
+Full example is in test/index.ts
+
 ```ts
 // creating the loading frames
 function loading(coords: { x: number, y: number }): AnimatedFrame[] {
-    return [
-        { 
-            // parseStringToCells is a helper method that is self explanatory
-            // cells are basically the "pixels" inside the canvas
-            frame: [{ message: parseStringToCells(`/`), coords }]
-        },
-        { 
-            frame: [{ message: parseStringToCells(`-`), coords }]
-        },
-        ...
-    ]
+    return parseStringsToFrames(["/", "-", "\\", "|", "/", "-", "\\"], coords);
 }
-
-// you could also get frames from an .ani file
-function clouds(coords: { x: number, y: number }) {
-    return parseAniFile(readFileSync("./frames/ani/anim1.ani").toString())
-        .map(ani => { return {
-            frame: [{
-                message: ani,
-                coords: coords
-            }]}
-        });
+// helper function for getting frames from a .tani file
+function importAnimation(file: string, coords: { x: number, y: number }) {
+    return parseAniFile(readFileSync(`./frames/ani/${file}.tani`).toString(), coords);
 }
 
 // composes those frames into giant series of frames lasting 30 frames only
 const composed = composeWidgets({
-    overlays: [
+    layers: [
         { start_frame: 3, animation: new AnimatedWidget(
             loop( // repeats the loading animation 10 times
                 loading({ x: 2, y: 2 }), 10
             )
         )},
-        { start_frame: 0, animation: new AnimatedWidget(
-            loop(
-                clouds({ x: 2, y: 2 }), 10
-            )
-        )}
     ],
     length: 30,
 });
@@ -69,7 +48,7 @@ const player = new Player(100, 100);
 player.play(composed, FRAMES15);
 
 // you could also pass in the frames directly
-player.play(loading({ x: 2, y: 2 }), 10))
+player.play(loading({ x: 2, y: 2 }), 10);
 ```
 
 ## How It Works
