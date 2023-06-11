@@ -1,6 +1,14 @@
 import { AnimatedFrame } from "../index.js";
 import { Cell, Frame } from "./animated.js";
 
+type Color = { 
+    r: number, g: number, b: number, 
+    index: { 
+        start: { line: number, character: number },
+        end:   { line: number, character: number },
+    },
+};
+
 export function parseAniFile(
     ani_output: string,
     coords: { x: number, y: number }
@@ -8,6 +16,8 @@ export function parseAniFile(
     const frame_content_regex = /\d+:\s*<START>([\s\S]*?)<END>/g;
     const frame_matches = [...ani_output.matchAll(frame_content_regex)]
         .map(v => v[1]);
+
+    // figure out how to format .ani files
 
     return parseStringsToFrames(frame_matches, coords);
 }
@@ -29,28 +39,27 @@ export function parseStringsToFrames(
     return ani_frames;
 }
 
-export function parseStringToCells(complete_strings: string): Cell[][] {
+export function parseStringToCells(
+    complete_strings: string,
+    ...colors: Color[]
+): Cell[][] {
     const cell: Cell[][] = [];
 
     const str = complete_strings
         .split("\n")
         .map(v => v.replace("\r", "")); // removes duplication issue :)
 
-    for (const line of str) {
-        const cell_innard = [];
-
-        const opening_color_tag_index = line.indexOf("<color");
-        const closing_color_tag_index = line.indexOf("</color>")
-
-        const color_matches = line
-            .replaceAll(/<color (.*?)>/g, "")
+    for (let line_index = 0; line_index < str.length; line_index++) {
+        const line = str[line_index];
+        const cell_innard: Cell[] = [];
 
         for (let character_index = 0; character_index < line.length; character_index++) {
             const character = line[character_index];
-            cell_innard.push({
-                f: character,
 
-            })
+            cell_innard.push({
+                f: character.trim(),
+                color: parseColorRGB(line_index, character_index, colors)
+            });
         }
         cell.push(cell_innard);
     }
@@ -58,29 +67,32 @@ export function parseStringToCells(complete_strings: string): Cell[][] {
     return cell;
 }
 
-function getColorTag(str: string) {
-    const startTag = "<color ";
-    const endTag = ">";
-    let startIndex = str.indexOf(startTag);
-    
-    while (startIndex !== -1) {
-        const endIndex = str.indexOf(endTag, startIndex + startTag.length);
+function parseColorRGB(
+    line_index: number, character_index: number,
+    colors: Color[],
+) {
+    const color = colors?.find(v => {
+        return ((v.index.start.line >= line_index) !== (v.index.start.character >= character_index))
+            && ((v.index.end.line < line_index) === (v.index.end.character < character_index));
+    });
 
-        if (endIndex !== -1) {
-            const numbersStr = str.substring(startIndex + startTag.length, endIndex);
-            const numbers = numbersStr.split(",").map(numStr => parseInt(numStr.trim(), 10));
-
-            console.log(numbers);
-        } else {
-            console.log("No closing tag found.");
-        }
-
-        startIndex = str.indexOf(startTag, endIndex);
-    }
+    return color
+        ? { r: color.r, g: color.g, b: color.b }
+        : undefined;
 }
 
-const a = [];
-for (let i = 0; i < 1000; i++) {
-    a.push(`<color ${i}, ${i}, ${i}>`);
-}
-console.log(getColorTag(a.join(" ")))
+console.log(parseStringToCells(
+    `dsa <color 1, 2>dsfds</color> <color 1, 2, 3>dsfdsdsa</color>\nmelt fndskjfn`, 
+        { r: 10, g: 10, b: 10,
+            index: {
+                start: { line: 0, character: 2 },
+                end:   { line: 0, character: 10 },
+            }
+        },
+        { r: 10, g: 10, b: 10,
+            index: {
+                start: { line: 1, character: 2 },
+                end:   { line: 1, character: 6 },
+            }
+        },
+));
