@@ -1,3 +1,4 @@
+import { compress, decompress } from "shrink-string";
 import {
     AnimatedFrame,
     AnimatedWidget,
@@ -25,6 +26,7 @@ import {
 import jsonfile from "jsonfile";
 import {
     readFileSync,
+    writeFileSync,
     createReadStream,
 } from "fs";
 
@@ -148,7 +150,9 @@ const composed = composeWidgets({
     length: 400,
 });
 
-// jsonfile.writeFileSync("./frames/json/composed.json", composed);
-
+writeFileSync("./frames/json/composed.json", await compress(JSON.stringify(composed)) );
+// writeFileSync("./frames/json/composed-uncompressed.json", JSON.stringify(composed));
 const player = new Player(80, 60);
-player.play(composed, FRAMES15);
+const a = await decompress(readFileSync("./frames/json/composed.json").toString())
+player.play(JSON.parse(a), FRAMES15);
+// npx tsc => node index.ts
