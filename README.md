@@ -15,7 +15,7 @@ Performance is not a priority right now, so if you want to change bad performing
 
 
 ## High-Priority: To Do Features
-- Color support `(25% complete * parseStringToCells completed!)`
+- Color support `(75% complete * color support is in experimental!)`
 
 ## Code Example
 
