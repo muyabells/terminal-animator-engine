@@ -1,4 +1,4 @@
-import { compress, decompress } from "shrink-string";
+import zlib from "zlib";
 import {
     AnimatedFrame,
     AnimatedWidget,
@@ -134,7 +134,7 @@ const composed = composeWidgets({
             start_frame: 360, animation: new AnimatedWidget(
                 prolongFrame(
                     fadeIn(
-                        generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1),
+                        generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1, 1.2),
                     250),
                 19, 60)
             )
@@ -142,7 +142,7 @@ const composed = composeWidgets({
         {
             start_frame: 0, animation: new AnimatedWidget(
                 fadeOut(
-                    generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1),
+                    generateWhiteFrames(80, 60, { x: 0, y: 1 }, 1, 1.2),
                 250),
             )
         }
@@ -150,9 +150,8 @@ const composed = composeWidgets({
     length: 400,
 });
 
-writeFileSync("./frames/json/composed.json", await compress(JSON.stringify(composed)) );
-// writeFileSync("./frames/json/composed-uncompressed.json", JSON.stringify(composed));
+// writeFileSync("./frames/json/composed-brotli.txt", zlib.brotliCompressSync(Buffer.from(JSON.stringify(composed))));
 const player = new Player(80, 60);
-const a = await decompress(readFileSync("./frames/json/composed.json").toString())
-player.play(JSON.parse(a), FRAMES15);
+// const a = zlib.brotliDecompressSync(readFileSync("./frames/json/composed-brotli.txt")).toString()
+player.play(composed, FRAMES15);
 // npx tsc => node index.ts

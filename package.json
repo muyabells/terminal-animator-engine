@@ -16,7 +16,6 @@
   "dependencies": {
     "jsonfile": "^6.1.0",
     "naudiodon": "^2.3.6",
-    "shrink-string": "^3.1.6",
     "terminal-canvas": "^3.1.2"
   },
   "type": "module"
