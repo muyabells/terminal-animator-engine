@@ -67,9 +67,8 @@ export function badHTMLParser(stri: string) {
     const str_split = stri
         .split("\n")
         .map(v => v.replace("\r", "")); // removes duplication issue :)
-
     const state = {
-        applied_effects: new Map<string, string>(),
+        applied_effects: new Map<string, Object>(),
         effect: "",
         parameters: "",
         // locks for adding effects into applied_effects
@@ -86,27 +85,54 @@ export function badHTMLParser(stri: string) {
         const line = str_split[line_index];
         for (let character_index = 0; character_index < line.length; character_index++) {
             const character = line[character_index];
-            characterParser(character, state);
+            characterParser(character, state, parameterParser);
 
             if (state.is_included && character !== ">")
-                console.log(`${[...state.applied_effects.entries()]} => ${character}`);
+                console.log(`${JSON.stringify([...state.applied_effects.values()])} => ${character} => ${state.parameters}`);
         }
     }
 }
 
-badHTMLParser("who are you, who am <color(paraamm)> I <p(wtf)>II</p>??? </color>  aa")
+badHTMLParser(`who are you, who am 
+    <color(12, 23, 43)> 
+        I 
+    II
+        ??? 
+    </color>  
+aa`)
+
+function parameterParser(effect: string, parameter: string): Object {
+    switch (effect) {
+        case "color":
+            const [r, g, b] = parameter
+                .split(",")
+                .map(v => {
+                    const i = parseInt(v.trim(), 10);
+                    if (Number.isNaN(i)) {
+                        throw Error(`Parameter ${parameter} is unable to be converted into a number.`);
+                    }
+                    return i;
+                });
+            return { r, g, b };
+            break;
+        default:
+            return {};
+            break;
+    }
+}
 
 function characterParser(
     character: string,
     state: {
-        applied_effects: Map<string, string>,
+        applied_effects: Map<string, Object>,
         effect: string,
         parameters: string,
         effect_add_lock: boolean,
         parameter_add_lock: boolean,
         is_ending: boolean,
         is_included: boolean,
-    }
+    },
+    parameter_handlers: (effect: string, parameter: string) => Object,
 ) {
     switch (character) {
         case "/":
@@ -116,11 +142,12 @@ function characterParser(
             state.effect_add_lock = true;
             state.is_ending = false;
             state.effect = "";
+            state.parameters = "";
             state.is_included = false;
             break;
         case ">":
             if (!state.is_ending) {
-                state.applied_effects.set(state.effect, state.parameters);
+                state.applied_effects.set(state.effect, parameter_handlers(state.effect, state.parameters));
             } else {
                 state.applied_effects.delete(state.effect);
             }
