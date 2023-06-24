@@ -6,6 +6,8 @@ type ColorParameters = {
     g: number,
     b: number,
 }
+type Parameters = ColorParameters | {};
+
 
 export function parseAniFile(
     ani_output: string,
@@ -36,7 +38,7 @@ export function parseStringsToFrames(
     }
     return ani_frames;
 }
-
+/*
 export function parseStringToCells(
     complete_strings: string,
 ): Cell[][] {
@@ -62,13 +64,15 @@ export function parseStringToCells(
 
     return cell;
 }
+*/
 
-export function badHTMLParser(stri: string) {
-    const str_split = stri
+export function parseStringToCells(complete_strings: string): Cell[][] {
+    const cell: Cell[][] = [];
+    const str_split = complete_strings
         .split("\n")
         .map(v => v.replace("\r", "")); // removes duplication issue :)
     const state = {
-        applied_effects: new Map<string, Object>(),
+        applied_effects: new Map<string, Parameters>(),
         effect: "",
         parameters: "",
         // locks for adding effects into applied_effects
@@ -83,25 +87,35 @@ export function badHTMLParser(stri: string) {
 
     for (let line_index = 0; line_index < str_split.length; line_index++) {
         const line = str_split[line_index];
+        const cell_innard: Cell[] = [];
+
         for (let character_index = 0; character_index < line.length; character_index++) {
             const character = line[character_index];
             characterParser(character, state, parameterParser);
 
-            if (state.is_included && character !== ">")
-                console.log(`${JSON.stringify([...state.applied_effects.values()])} => ${character} => ${state.parameters}`);
+            if (state.is_included && character !== ">") {
+                const params = state.applied_effects.get("color");
+                
+
+                cell_innard.push({
+                    f: character.trim(),
+                    color: (params && isColor(params)) ?
+                        {
+                            r: params.r,
+                            g: params.g,
+                            b: params.b
+                        } : undefined
+                })
+            }
+                // console.log(`${JSON.stringify([...state.applied_effects.values()])} => ${character} => ${state.parameters}`);
         }
+        cell.push(cell_innard);
     }
+
+    return cell;
 }
 
-badHTMLParser(`who are you, who am 
-    <color(12, 23, 43)> 
-        I 
-    II
-        ??? 
-    </color>  
-aa`)
-
-function parameterParser(effect: string, parameter: string): Object {
+function parameterParser(effect: string, parameter: string): Parameters {
     switch (effect) {
         case "color":
             const [r, g, b] = parameter
@@ -124,7 +138,7 @@ function parameterParser(effect: string, parameter: string): Object {
 function characterParser(
     character: string,
     state: {
-        applied_effects: Map<string, Object>,
+        applied_effects: Map<string, Parameters>,
         effect: string,
         parameters: string,
         effect_add_lock: boolean,
@@ -132,7 +146,7 @@ function characterParser(
         is_ending: boolean,
         is_included: boolean,
     },
-    parameter_handlers: (effect: string, parameter: string) => Object,
+    parameter_handlers: (effect: string, parameter: string) => Parameters,
 ) {
     switch (character) {
         case "/":
@@ -172,4 +186,11 @@ function characterParser(
             state.is_included = true;
             break;
     }
+}
+
+// TYPE CHECK
+function isColor(param: Parameters): param is ColorParameters {
+    return (param as ColorParameters).r !== undefined &&
+        (param as ColorParameters).g !== undefined &&
+        (param as ColorParameters).b !== undefined;
 }
