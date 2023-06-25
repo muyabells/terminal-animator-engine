@@ -24,11 +24,7 @@ import {
     slider
 } from "../src/index.js";
 import jsonfile from "jsonfile";
-import {
-    readFileSync,
-    writeFileSync,
-    createReadStream,
-} from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 const FRAMES60 = 16;
 const FRAMES30 = 33;
@@ -150,8 +146,10 @@ const composed = composeWidgets({
     length: 400,
 });
 
+// should really use a stream ovah here
 // writeFileSync("./frames/json/composed-brotli.txt", zlib.brotliCompressSync(Buffer.from(JSON.stringify(composed))));
 const player = new Player(80, 60);
+
 // const a = zlib.brotliDecompressSync(readFileSync("./frames/json/composed-brotli.txt")).toString()
 player.play(composed, FRAMES15);
 // npx tsc => node index.ts
