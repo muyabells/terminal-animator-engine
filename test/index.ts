@@ -150,6 +150,6 @@ const composed = composeWidgets({
 // writeFileSync("./frames/json/composed-brotli.txt", zlib.brotliCompressSync(Buffer.from(JSON.stringify(composed))));
 const player = new Player(80, 60);
 
-// const a = zlib.brotliDecompressSync(readFileSync("./frames/json/composed-brotli.txt")).toString()
+// const a = JSON.parse(zlib.brotliDecompressSync(readFileSync("./frames/json/composed-brotli.txt")).toString());
 player.play(composed, FRAMES15);
 // npx tsc => node index.ts
