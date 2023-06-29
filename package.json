@@ -14,6 +14,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "csv-reader": "^1.0.12",
     "jsonfile": "^6.1.0",
     "naudiodon": "^2.3.6",
     "terminal-canvas": "^3.1.2"
